@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../../core/constants/screens_names.dart';
+import '../../../core/sevices/cache_services.dart';
 
 part 'auth_state.dart';
 
@@ -17,30 +18,20 @@ class AuthCubit extends Cubit<AuthStates> {
   );
   late String name, email, password;
 
-  // void signInWithEmailAndPassword(context) {
-  //   emit(SignInLoadingState());
-  //
-  //   try {
-  //     _auth
-  //         .signInWithEmailAndPassword(email: email, password: password)
-  //         .then((value) {
-  //       print(value);
-  //       emit(SignInSuccessState());
-  //       Navigator.pushNamed(context,ScreensNames.home );
-  //     });
-  //     emit(SignInErrorState());
-  //   } catch (e) {
-  //     print(e.toString());
-  //   }
-  // }
+  void setFirebaseToken(String firebaseUserToken) async {
+    await CacheHelper.setData(key: "firebase_token", value: firebaseUserToken);
+  }
+
   void signInWithEmailAndPassword(BuildContext context) {
     emit(SignInLoadingState());
 
     try {
       _auth
           .signInWithEmailAndPassword(email: email, password: password)
-          .then((value) {
-        print(value);
+          .then((value) async{
+        final userToken = await value.user!.getIdToken();
+         setFirebaseToken(userToken);
+
         emit(SignInSuccessState());
         Navigator.pushNamed(context, ScreensNames.home);
       }).catchError((error) {
@@ -54,29 +45,16 @@ class AuthCubit extends Cubit<AuthStates> {
     }
   }
 
-  // void registerWithEmailAndPassword(context) {
-  //   emit(SignUpLoadingState());
-  //   try {
-  //     _auth
-  //         .createUserWithEmailAndPassword(email: email, password: password)
-  //         .then((value) {
-  //       print(value);
-  //       emit(SignUpSuccessState());
-  //       Navigator.pushNamed(context,ScreensNames.home );
-  //     });
-  //   } catch (e) {
-  //     emit(SignUpErrorState());
-  //     print(e.toString());
-  //   }
-  // }
+
   void registerWithEmailAndPassword(BuildContext context) {
     emit(SignUpLoadingState());
 
     try {
       _auth
           .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) {
-        print(value);
+          .then((value) async{
+        final userToken = await value.user!.getIdToken();
+        setFirebaseToken(userToken);
         emit(SignUpSuccessState());
         Navigator.pushNamed(context, ScreensNames.home);
       }).catchError((error) {
@@ -100,7 +78,9 @@ class AuthCubit extends Cubit<AuthStates> {
       accessToken: googleSignInAuthentication.accessToken,
       idToken: googleSignInAuthentication.idToken,
     );
-    await _auth.signInWithCredential(credential).then((value) {
+    await _auth.signInWithCredential(credential).then((value) async{
+      final userToken = await value.user!.getIdToken();
+      setFirebaseToken(userToken);
       emit(GoogleSignInSuccessState());
       Navigator.pushNamed(context, ScreensNames.home);
     }).catchError((e) {

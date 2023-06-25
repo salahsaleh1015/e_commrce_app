@@ -1,6 +1,8 @@
 import 'package:e_commerce_app/core/router/app_router.dart';
+import 'package:e_commerce_app/core/sevices/cache_services.dart';
 import 'package:e_commerce_app/core/style/themes.dart';
 import 'package:e_commerce_app/features/authintication/view_model/auth_cubit.dart';
+import 'package:e_commerce_app/features/home/view/home_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,14 +15,16 @@ import 'features/authintication/view/login_view.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
-
-
-
+  await CacheHelper.init();
+  final firebaseToken = await CacheHelper.getData(key: "firebase_token");
+  runApp(MyApp(
+    firebaseToken: firebaseToken,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final String? firebaseToken;
+  const MyApp({Key? key, this.firebaseToken}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +45,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               theme: lightTheme,
               onGenerateRoute: AppRouter().onGenerateRoute,
-              home: LoginView(),
+              home: firebaseToken != null ? HomeView() : LoginView(),
             );
           }),
     );

@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/core/sevices/cache_services.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/component/custom_text.dart';
@@ -9,7 +10,17 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Scaffold(
       body: Center(
-        child: CustomText(title: "home page", fontSize: 40, color: kTextColor, fontWeight: FontWeight.bold),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CustomText(title: "home page", fontSize: 40, color: kTextColor, fontWeight: FontWeight.bold),
+            TextButton(onPressed: ()async{
+             await CacheHelper.clearData().then((value) {
+               print("sss");
+             });
+            }, child: Text("clear")),
+          ],
+        ),
       ),
     );
   }
