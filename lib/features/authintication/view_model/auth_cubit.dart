@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:e_commerce_app/features/authintication/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:meta/meta.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../../core/constants/screens_names.dart';
 import '../../../core/sevices/cache_services.dart';
+import '../../../core/sevices/user_firestore.dart';
 
 part 'auth_state.dart';
 
@@ -28,9 +30,9 @@ class AuthCubit extends Cubit<AuthStates> {
     try {
       _auth
           .signInWithEmailAndPassword(email: email, password: password)
-          .then((value) async{
+          .then((value) async {
         final userToken = await value.user!.getIdToken();
-         setFirebaseToken(userToken);
+        setFirebaseToken(userToken);
 
         emit(SignInSuccessState());
         Navigator.pushNamed(context, ScreensNames.home);
@@ -45,16 +47,19 @@ class AuthCubit extends Cubit<AuthStates> {
     }
   }
 
-
   void registerWithEmailAndPassword(BuildContext context) {
     emit(SignUpLoadingState());
 
     try {
       _auth
           .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) async{
-        final userToken = await value.user!.getIdToken();
+          .then((user) async {
+        final userToken = await user.user!.getIdToken();
         setFirebaseToken(userToken);
+        UserModel userModel = UserModel(
+            userId: user.user!.uid, name: name, email: email, photo: '');
+        await UserFireStore().addUserToFireStore(userModel);
+
         emit(SignUpSuccessState());
         Navigator.pushNamed(context, ScreensNames.home);
       }).catchError((error) {
@@ -73,12 +78,12 @@ class AuthCubit extends Cubit<AuthStates> {
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     print(googleUser);
     GoogleSignInAuthentication googleSignInAuthentication =
-    await googleUser!.authentication;
+        await googleUser!.authentication;
     final AuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleSignInAuthentication.accessToken,
       idToken: googleSignInAuthentication.idToken,
     );
-    await _auth.signInWithCredential(credential).then((value) async{
+    await _auth.signInWithCredential(credential).then((value) async {
       final userToken = await value.user!.getIdToken();
       setFirebaseToken(userToken);
       emit(GoogleSignInSuccessState());
