@@ -1,3 +1,6 @@
+import 'package:e_commerce_app/features/control/control_view/control_view.dart';
+import 'package:e_commerce_app/features/details/view/details_view.dart';
+import 'package:e_commerce_app/features/home/model/product_model.dart';
 import 'package:e_commerce_app/features/home/view/home_view.dart';
 import 'package:flutter/material.dart';
 import '../../features/authintication/view/login_view.dart';
@@ -17,7 +20,11 @@ class AppRouter {
       case ScreensNames.register:
         return MaterialPageRoute(builder: (_) => RegisterView());
       case ScreensNames.home:
-        return MaterialPageRoute(builder: (_) => const HomeView());
+        return MaterialPageRoute(builder: (_) =>  HomeView());
+      case ScreensNames.control:
+        return MaterialPageRoute(builder: (_) =>  const ControlView());
+      // case ScreensNames.details:
+      //   return MaterialPageRoute(builder: (_) =>   DetailsView(model: ProductModel(),));
 
       default:
         return null;

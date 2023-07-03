@@ -2,7 +2,9 @@ import 'package:e_commerce_app/core/router/app_router.dart';
 import 'package:e_commerce_app/core/sevices/cache_services.dart';
 import 'package:e_commerce_app/core/style/themes.dart';
 import 'package:e_commerce_app/features/authintication/view_model/auth_cubit.dart';
+import 'package:e_commerce_app/features/control/cubit/control_cubit.dart';
 import 'package:e_commerce_app/features/home/view/home_view.dart';
+import 'package:e_commerce_app/features/home/view_model/home_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'core/style/colors.dart';
 import 'features/authintication/view/login_view.dart';
+import 'features/control/control_view/control_view.dart';
 
 
 void main() async {
@@ -32,6 +35,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(create: (context) => AuthCubit()),
+        BlocProvider<ControlCubit>(create: (context) => ControlCubit()),
+
+        BlocProvider<HomeCubit>(create: (context) => HomeCubit()..getCategory()..getProducts()),
       ],
       child: ScreenUtilInit(
           designSize: const Size(360, 690),
@@ -46,7 +52,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               theme: lightTheme,
               onGenerateRoute: AppRouter().onGenerateRoute,
-              home: firebaseToken != null ? HomeView() : LoginView(),
+              home: firebaseToken != null ? const ControlView() : LoginView(),
             );
           }),
     );
