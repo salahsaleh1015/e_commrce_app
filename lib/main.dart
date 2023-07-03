@@ -2,6 +2,7 @@ import 'package:e_commerce_app/core/router/app_router.dart';
 import 'package:e_commerce_app/core/sevices/cache_services.dart';
 import 'package:e_commerce_app/core/style/themes.dart';
 import 'package:e_commerce_app/features/authintication/view_model/auth_cubit.dart';
+import 'package:e_commerce_app/features/cart/view_model/cart_cubit.dart';
 import 'package:e_commerce_app/features/control/cubit/control_cubit.dart';
 import 'package:e_commerce_app/features/home/view/home_view.dart';
 import 'package:e_commerce_app/features/home/view_model/home_cubit.dart';
@@ -36,8 +37,10 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<AuthCubit>(create: (context) => AuthCubit()),
         BlocProvider<ControlCubit>(create: (context) => ControlCubit()),
-
         BlocProvider<HomeCubit>(create: (context) => HomeCubit()..getCategory()..getProducts()),
+        BlocProvider<CartCubit>(create: (context) => CartCubit()..getAllProducts()),
+
+
       ],
       child: ScreenUtilInit(
           designSize: const Size(360, 690),

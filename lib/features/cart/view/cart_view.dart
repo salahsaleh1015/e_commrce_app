@@ -1,5 +1,7 @@
 
+import 'package:e_commerce_app/features/cart/view_model/cart_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/component/custom_text.dart';
@@ -12,6 +14,12 @@ class CartView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocConsumer<CartCubit, CartStates>(
+  listener: (context, state) {
+    // TODO: implement listener
+  },
+  builder: (context, state) {
+    var cubit = CartCubit.get(context);
     return Scaffold(
         body: Column(
       children: [
@@ -27,13 +35,13 @@ class CartView extends StatelessWidget {
                       SizedBox(
                         height: 120.h,
                         width: isLandscape(context)?150.w:120.w,
-                        child: Image.asset('assets/images/Image.png',),
+                        child: Image.network(cubit.cartProductModel[index].image),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomText(
-                            title:'BeoPlay Speaker',
+                            title:cubit.cartProductModel[index].name,
                             fontSize: 18.sp,
                             color: kTextColor,
                             fontWeight: FontWeight.bold,
@@ -42,7 +50,7 @@ class CartView extends StatelessWidget {
                            SizedBox(
                             height: 7.h,
                           ),
-                          CustomText(title: "\$1100 ", fontSize: 12.sp, color: kPrimaryColor, fontWeight: FontWeight.normal),
+                          CustomText(title: "\$${cubit.cartProductModel[index].price} ", fontSize: 12.sp, color: kPrimaryColor, fontWeight: FontWeight.normal),
 
                            SizedBox(
                             height: 10.h,
@@ -57,7 +65,7 @@ class CartView extends StatelessWidget {
                                 color: kTextColor,
 
                                 )),
-                                CustomText(title: "1", fontSize: 12.sp, color: kTextColor, fontWeight: FontWeight.normal),
+                                CustomText(title: cubit.cartProductModel[index].quantity.toString(), fontSize: 12.sp, color: kTextColor, fontWeight: FontWeight.normal),
                                 IconButton(onPressed: (){}, icon:  const Icon(Icons.minimize,color:  kTextColor,)
 
                                 ),
@@ -74,7 +82,7 @@ class CartView extends StatelessWidget {
                     height: 7.h,
                   );
                 },
-                itemCount: 10),
+                itemCount: cubit.cartProductModel.length),
           ),
         ),
         Expanded(
@@ -127,5 +135,7 @@ class CartView extends StatelessWidget {
         ),
       ],
     ));
+  },
+);
   }
 }
