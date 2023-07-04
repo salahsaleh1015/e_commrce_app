@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthCubit>(create: (context) => AuthCubit()),
         BlocProvider<ControlCubit>(create: (context) => ControlCubit()),
         BlocProvider<HomeCubit>(create: (context) => HomeCubit()..getCategory()..getProducts()),
-        BlocProvider<CartCubit>(create: (context) => CartCubit()..getAllProducts()),
+        BlocProvider<CartCubit>(create: (context) => CartCubit()..getAllProducts()..getTotalPrice()),
 
 
       ],

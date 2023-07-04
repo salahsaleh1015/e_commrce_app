@@ -1,5 +1,5 @@
 class CartProductModel {
-  String name, image,  price;
+  String name, image,  price , productId;
   int quantity;
 
 
@@ -8,6 +8,8 @@ class CartProductModel {
     required  this.image,
     required this.price,
     required this.quantity,
+    required this.productId,
+
 
 
   });
@@ -18,6 +20,7 @@ class CartProductModel {
       image: json['image'],
      quantity: json['quantity'],
       price: json['price'],
+      productId: json['productId']
 
     );
   }
@@ -27,6 +30,7 @@ class CartProductModel {
     'image': image,
     'price': price,
     'quantity':quantity,
+    'productId':productId,
 
   };
 }

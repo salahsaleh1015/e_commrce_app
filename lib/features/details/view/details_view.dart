@@ -108,14 +108,15 @@ class DetailsView extends StatelessWidget {
                             builder: (context, state) {
                               var cubit = CartCubit.get(context);
                               return InkWell(
-                                onTap: (){
-                                  cubit.addProduct(CartProductModel(
-                                      name: model.name,
-                                      image: model.image,
-                                      price: model.price,
-                                      quantity: 1
-                                  )
-                                  );
+                                onTap: () {
+                                  cubit.addProduct(
+                                      CartProductModel(
+                                          name: model.name,
+                                          image: model.image,
+                                          price: model.price,
+                                          quantity: 1,
+                                          productId: model.productId),
+                                      context);
                                 },
                                 child: Container(
                                   width: 100.w,

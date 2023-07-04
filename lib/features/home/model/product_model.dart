@@ -1,5 +1,5 @@
 class ProductModel {
-  String name, image, description, size, price;
+  String name, image, description, size, price, productId;
 
 
   ProductModel({
@@ -8,6 +8,7 @@ class ProductModel {
     required this.description,
     required this.size,
     required this.price,
+    required this.productId,
 
   });
 
@@ -18,6 +19,7 @@ class ProductModel {
       description: json['description'],
       size: json['size'],
       price: json['price'],
+      productId: json['productId']
 
     );
   }
@@ -28,6 +30,7 @@ class ProductModel {
     'description': description,
     'size': size,
     'price': price,
+    'productId': productId,
 
   };
 }

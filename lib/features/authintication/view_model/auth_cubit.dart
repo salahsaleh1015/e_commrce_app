@@ -35,7 +35,7 @@ class AuthCubit extends Cubit<AuthStates> {
         setFirebaseToken(userToken);
 
         emit(SignInSuccessState());
-        Navigator.pushNamed(context, ScreensNames.home);
+        Navigator.pushNamed(context, ScreensNames.control);
       }).catchError((error) {
         emit(SignInErrorState());
         ScaffoldMessenger.of(context).showSnackBar(
@@ -61,7 +61,7 @@ class AuthCubit extends Cubit<AuthStates> {
         await UserFireStore().addUserToFireStore(userModel);
 
         emit(SignUpSuccessState());
-        Navigator.pushNamed(context, ScreensNames.home);
+        Navigator.pushNamed(context, ScreensNames.control);
       }).catchError((error) {
         emit(SignUpErrorState());
         ScaffoldMessenger.of(context).showSnackBar(
@@ -87,7 +87,7 @@ class AuthCubit extends Cubit<AuthStates> {
       final userToken = await value.user!.getIdToken();
       setFirebaseToken(userToken);
       emit(GoogleSignInSuccessState());
-      Navigator.pushNamed(context, ScreensNames.home);
+      Navigator.pushNamed(context, ScreensNames.control);
     }).catchError((e) {
       emit(GoogleSignInErrorState());
       print(e.toString());
