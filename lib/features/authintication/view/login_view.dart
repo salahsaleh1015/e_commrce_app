@@ -147,7 +147,7 @@ class LoginView extends StatelessWidget {
                       Center(
                         child: CustomSocialButton(
                           onTap: () {
-                            AuthCubit.get(context).signInWithGoogleMethod(context);
+                            //AuthCubit.get(context).signInWithGoogleMethod(context);
                           },
                           text: 'Sign In with Google',
                           image: "assets/images/icons8_Google_2.png",

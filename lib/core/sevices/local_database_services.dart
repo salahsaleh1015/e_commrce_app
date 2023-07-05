@@ -66,5 +66,11 @@ class CartDatabaseHelper {
         where: '$columnProductId = ?', whereArgs: [model.productId]);
   }
 
+  deleteData({required String id}) async{
+    var dbClient = await database;
+    dbClient!.rawDelete('DELETE FROM $cartProductTable WHERE $columnProductId = ?', [id]);
+
+  }
+
 
 }

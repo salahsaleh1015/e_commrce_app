@@ -11,33 +11,30 @@ class CartCubit extends Cubit<CartStates> {
 
   static CartCubit get(context) => BlocProvider.of(context);
 
-  void buildSnakeBar(context){
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-
-        backgroundColor: Colors.green, // set the background color to green
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20), // set the border radius
-        ),
-        content: Text('Product added to cart!'),
-        duration: Duration(seconds: 3),
-        action: SnackBarAction(
-          label: 'View Cart',
-          onPressed: () {
-            // navigate to the cart screen
-          },
-        ),
-      ),
+  void buildSimpleDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          title: Text('Product added to cart!'),
+        );
+      },
     );
   }
 
   List<CartProductModel> _cartProductModel = [];
+
   List<CartProductModel> get cartProductModel => _cartProductModel;
   double _totlePrice = 0.0;
+
   double get totalPrice => _totlePrice;
   var dbHelper = CartDatabaseHelper.db;
 
-  addProduct(CartProductModel cartProductModel , context) async {
+  addProduct(CartProductModel cartProductModel, context) async {
     for (int i = 0; i < _cartProductModel.length; i++) {
       if (_cartProductModel[i].productId == cartProductModel.productId) {
         return;
@@ -46,8 +43,8 @@ class CartCubit extends Cubit<CartStates> {
     await dbHelper.insert(cartProductModel);
     _cartProductModel.add(cartProductModel);
     _totlePrice +=
-        (double.parse(cartProductModel.price) * cartProductModel.quantity);
-    buildSnakeBar(context);
+    (double.parse(cartProductModel.price) * cartProductModel.quantity);
+    buildSimpleDialog(context);
     emit(CartDataInsertedSuccessfullyState());
   }
 
@@ -59,6 +56,7 @@ class CartCubit extends Cubit<CartStates> {
   }
 
   getTotalPrice() {
+     _totlePrice = 0.0;
     for (int i = 0; i < _cartProductModel.length; i++) {
       _totlePrice += (double.parse(_cartProductModel[i].price) *
           _cartProductModel[i].quantity);
@@ -66,16 +64,29 @@ class CartCubit extends Cubit<CartStates> {
     emit(CartProductPriceCalculatedSuccessfullyState());
   }
 
-  increaseQuantity(int index){
+  increaseQuantity(int index) {
     _cartProductModel[index].quantity++;
-    _totlePrice+=(double.parse(_cartProductModel[index].price.toString()));
+    _totlePrice += (double.parse(_cartProductModel[index].price.toString()));
     dbHelper.update(_cartProductModel[index]);
     emit(CartProductQuantityIncreasedSuccessfullyState());
   }
-  decreaseQuantity(int index){
+
+  decreaseQuantity(int index) {
     _cartProductModel[index].quantity--;
-    _totlePrice-=(double.parse(_cartProductModel[index].price.toString()));
+    _totlePrice -= (double.parse(_cartProductModel[index].price.toString()));
     dbHelper.update(_cartProductModel[index]);
-emit(CartProductQuantityDecreasedSuccessfullyState());
+    emit(CartProductQuantityDecreasedSuccessfullyState());
   }
+
+
+Future<void> deleteProduct(String productId , int index) async {
+    await dbHelper.deleteData(id: productId).then((value){
+      _totlePrice = 0.0;
+      getTotalPrice();
+      getAllProducts();
+      emit(CartProductDeletedFromCartSuccessfullyState());
+    });
+
+}
+
 }

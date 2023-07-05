@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import '../../../core/constants/screens_names.dart';
 import '../../../core/sevices/cache_services.dart';
 import '../../../core/sevices/user_firestore.dart';
@@ -15,9 +14,9 @@ class AuthCubit extends Cubit<AuthStates> {
   AuthCubit() : super(AuthInitial());
   static AuthCubit get(context) => BlocProvider.of(context);
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: ['email'],
-  );
+  // final GoogleSignIn _googleSignIn = GoogleSignIn(
+  //   scopes: ['email'],
+  // );
   late String name, email, password;
 
   void setFirebaseToken(String firebaseUserToken) async {
@@ -73,24 +72,24 @@ class AuthCubit extends Cubit<AuthStates> {
     }
   }
 
-  void signInWithGoogleMethod(context) async {
-    emit(GoogleSignInLoadingState());
-    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-    print(googleUser);
-    GoogleSignInAuthentication googleSignInAuthentication =
-        await googleUser!.authentication;
-    final AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
-    );
-    await _auth.signInWithCredential(credential).then((value) async {
-      final userToken = await value.user!.getIdToken();
-      setFirebaseToken(userToken);
-      emit(GoogleSignInSuccessState());
-      Navigator.pushNamed(context, ScreensNames.control);
-    }).catchError((e) {
-      emit(GoogleSignInErrorState());
-      print(e.toString());
-    });
-  }
+  // void signInWithGoogleMethod(context) async {
+  //   emit(GoogleSignInLoadingState());
+  //   final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+  //   print(googleUser);
+  //   GoogleSignInAuthentication googleSignInAuthentication =
+  //       await googleUser!.authentication;
+  //   final AuthCredential credential = GoogleAuthProvider.credential(
+  //     accessToken: googleSignInAuthentication.accessToken,
+  //     idToken: googleSignInAuthentication.idToken,
+  //   );
+  //   await _auth.signInWithCredential(credential).then((value) async {
+  //     final userToken = await value.user!.getIdToken();
+  //     setFirebaseToken(userToken);
+  //     emit(GoogleSignInSuccessState());
+  //     Navigator.pushNamed(context, ScreensNames.control);
+  //   }).catchError((e) {
+  //     emit(GoogleSignInErrorState());
+  //     print(e.toString());
+  //   });
+  // }
 }

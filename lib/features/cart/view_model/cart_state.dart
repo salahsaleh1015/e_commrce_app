@@ -9,5 +9,6 @@ class CartDataRetrievedSuccessfullyState extends CartStates{}
 class CartProductPriceCalculatedSuccessfullyState extends CartStates{}
 class CartProductQuantityIncreasedSuccessfullyState extends CartStates{}
 class CartProductQuantityDecreasedSuccessfullyState extends CartStates{}
+class CartProductDeletedFromCartSuccessfullyState extends CartStates{}
 
 

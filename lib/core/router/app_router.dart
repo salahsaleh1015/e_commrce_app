@@ -5,6 +5,7 @@ import 'package:e_commerce_app/features/home/view/home_view.dart';
 import 'package:flutter/material.dart';
 import '../../features/authintication/view/login_view.dart';
 import '../../features/authintication/view/register_view.dart';
+import '../../features/check_out/view/check_out_view.dart';
 import '../constants/screens_names.dart';
 
 class AppRouter {
@@ -23,6 +24,9 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) =>  HomeView());
       case ScreensNames.control:
         return MaterialPageRoute(builder: (_) =>  const ControlView());
+      case ScreensNames.checkOut:
+        return MaterialPageRoute(builder: (_) => CheckOutView());
+
       // case ScreensNames.details:
       //   return MaterialPageRoute(builder: (_) =>   DetailsView(model: ProductModel(),));
 
