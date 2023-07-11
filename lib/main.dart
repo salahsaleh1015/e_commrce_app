@@ -3,6 +3,7 @@ import 'package:e_commerce_app/core/sevices/cache_services.dart';
 import 'package:e_commerce_app/core/style/themes.dart';
 import 'package:e_commerce_app/features/authintication/view_model/auth_cubit.dart';
 import 'package:e_commerce_app/features/cart/view_model/cart_cubit.dart';
+import 'package:e_commerce_app/features/check_out/view_model/checkout_cubit.dart';
 import 'package:e_commerce_app/features/control/cubit/control_cubit.dart';
 import 'package:e_commerce_app/features/home/view/home_view.dart';
 import 'package:e_commerce_app/features/home/view_model/home_cubit.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<ControlCubit>(create: (context) => ControlCubit()),
         BlocProvider<HomeCubit>(create: (context) => HomeCubit()..getCategory()..getProducts()),
         BlocProvider<CartCubit>(create: (context) => CartCubit()..getAllProducts()..getTotalPrice()),
+        BlocProvider<CheckoutCubit>(create: (context) => CheckoutCubit()..retrieveLatestCheckoutData()),
 
 
       ],

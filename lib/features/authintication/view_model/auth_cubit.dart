@@ -14,9 +14,7 @@ class AuthCubit extends Cubit<AuthStates> {
   AuthCubit() : super(AuthInitial());
   static AuthCubit get(context) => BlocProvider.of(context);
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  // final GoogleSignIn _googleSignIn = GoogleSignIn(
-  //   scopes: ['email'],
-  // );
+
   late String name, email, password;
 
   void setFirebaseToken(String firebaseUserToken) async {
@@ -72,24 +70,4 @@ class AuthCubit extends Cubit<AuthStates> {
     }
   }
 
-  // void signInWithGoogleMethod(context) async {
-  //   emit(GoogleSignInLoadingState());
-  //   final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-  //   print(googleUser);
-  //   GoogleSignInAuthentication googleSignInAuthentication =
-  //       await googleUser!.authentication;
-  //   final AuthCredential credential = GoogleAuthProvider.credential(
-  //     accessToken: googleSignInAuthentication.accessToken,
-  //     idToken: googleSignInAuthentication.idToken,
-  //   );
-  //   await _auth.signInWithCredential(credential).then((value) async {
-  //     final userToken = await value.user!.getIdToken();
-  //     setFirebaseToken(userToken);
-  //     emit(GoogleSignInSuccessState());
-  //     Navigator.pushNamed(context, ScreensNames.control);
-  //   }).catchError((e) {
-  //     emit(GoogleSignInErrorState());
-  //     print(e.toString());
-  //   });
-  // }
 }

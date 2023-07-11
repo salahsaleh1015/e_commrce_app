@@ -1,8 +1,9 @@
 import 'package:e_commerce_app/core/component/custom_text.dart';
 import 'package:e_commerce_app/features/check_out/view/steps_content/step_one_view.dart';
 import 'package:e_commerce_app/features/check_out/view/steps_content/step_three_view.dart';
-import 'package:e_commerce_app/features/check_out/view/steps_content/step_two_view.dart';
+import 'package:e_commerce_app/features/check_out/view_model/checkout_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/component/custom_text_form_feild.dart';
@@ -21,10 +22,21 @@ class _CheckOutViewState extends State<CheckOutView> {
   bool isCompleted = false;
   late String streetOne,streetTwo,city;
   final formKey = GlobalKey<FormState>();
+
+   var streetOneController = TextEditingController();
+  var streetTwoController = TextEditingController();
+  var cityController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
+      child: BlocConsumer<CheckoutCubit, CheckoutStates>(
+  listener: (context, state) {
+    // TODO: implement listener
+  },
+  builder: (context, state) {
+
+    return Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: Text(
@@ -53,9 +65,11 @@ class _CheckOutViewState extends State<CheckOutView> {
 
 
                   onStepContinue: () {
+
                     if (currentStep == 1) {
                       formKey.currentState!.save();
                       if (formKey.currentState!.validate()) {
+                        CheckoutCubit.get(context).addCheckoutData(streetOne, streetTwo, city);
 
                       }else{
                         setState(() {
@@ -107,7 +121,9 @@ class _CheckOutViewState extends State<CheckOutView> {
                   },
                 ),
               ),
-      ),
+      );
+  },
+),
     );
   }
 
@@ -155,6 +171,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                       color: kSecondaryColor,
                       fontWeight: FontWeight.normal),
                   CustomFormField(
+                    controller: streetOneController,
                       title: "title",
                       onSaved: (val) {
                         streetOne = val;
@@ -174,6 +191,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                       color: kSecondaryColor,
                       fontWeight: FontWeight.normal),
                   CustomFormField(
+                    controller: streetTwoController,
                       title: "title",
                       onSaved: (val) {
                         streetTwo = val;
@@ -193,6 +211,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                       color: kSecondaryColor,
                       fontWeight: FontWeight.normal),
                   CustomFormField(
+                    controller: cityController,
                       title: "title",
                       onSaved: (val) {
                         city = val;
@@ -213,6 +232,10 @@ class _CheckOutViewState extends State<CheckOutView> {
             state: currentStep > 2 ? StepState.complete : StepState.indexed,
             isActive: currentStep >= 2,
             title: Text("Summer", style: Theme.of(context).textTheme.caption),
-            content: StepThreeView()),
+            content: StepThreeView(
+              city: cityController.text,
+              streetOne: streetOneController.text,
+              streetTwo: streetTwoController.text,
+            )),
       ];
 }

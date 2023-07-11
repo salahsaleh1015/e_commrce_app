@@ -12,6 +12,10 @@ import '../view_model/auth_cubit.dart';
 class RegisterView extends StatelessWidget {
   RegisterView({Key? key}) : super(key: key);
   var _formKey = GlobalKey<FormState>();
+  var nameController = TextEditingController();
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthStates>(
@@ -65,6 +69,7 @@ class RegisterView extends StatelessWidget {
                         height: 10.h,
                       ),
                       CustomFormField(
+                        controller: nameController,
                         onSaved: (val) {
                           AuthCubit.get(context).name = val;
                         },
@@ -89,6 +94,7 @@ class RegisterView extends StatelessWidget {
                         height: 10.h,
                       ),
                       CustomFormField(
+                        controller: emailController,
                         onSaved: (val) {
                           AuthCubit.get(context).email = val;
                         },
@@ -113,6 +119,7 @@ class RegisterView extends StatelessWidget {
                         height: 10.h,
                       ),
                       CustomFormField(
+                        controller: passwordController,
                         onSaved: (val) {
                           AuthCubit.get(context).password = val;
                         },

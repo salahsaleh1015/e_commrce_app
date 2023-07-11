@@ -1,14 +1,23 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/component/custom_profile_item.dart';
 import '../../../core/component/custom_text.dart';
+import '../../../core/constants/screens_names.dart';
 import '../../../core/responsive/responsive.dart';
+import '../../../core/sevices/cache_services.dart';
 import '../../../core/style/colors.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({Key? key}) : super(key: key);
+  Future<void> logout() async
+  {
+    await FirebaseAuth.instance.signOut();
+    CacheHelper.clearData();
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +39,7 @@ class ProfileView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               CircleAvatar(
-                child: Image.asset("assets/images/Avatar.png"),
+                child: Image.asset("assets/images/user.jpg",),
                 radius:isLandscape(context)?60.r: 50.r,
 
               ),
@@ -40,14 +49,14 @@ class ProfileView extends StatelessWidget {
               Column(
                 children:  [
                   CustomText(
-                    title:"fabrizio Dos santos",
+                    title:" user name ",
                     fontSize: isLandscape(context)?30.sp :20.sp,
                     fontWeight: FontWeight.bold,
                     color: kTextColor,
 
                   ),
                   CustomText(
-                    title:"fabrizioDosSantos@gmail.com",
+                    title:"user name @gmail.com",
                     fontSize:isLandscape(context)?15.sp :10.sp,
                     fontWeight: FontWeight.normal,
                     color: kSecondaryColor,
@@ -93,7 +102,11 @@ class ProfileView extends StatelessWidget {
             text: 'Notifications',
           ),
           CustomProfileItem(
-            onTap: () {},
+            onTap: () async {
+            await logout().then((value) {
+              Navigator.pushNamed(context, ScreensNames.login);
+            });
+            },
             image: "assets/images/Group 200.png",
             text:'Log Out',
           ),

@@ -14,6 +14,8 @@ import '../view_model/auth_cubit.dart';
 class LoginView extends StatelessWidget {
   LoginView({Key? key}) : super(key: key);
   var _formKey = GlobalKey<FormState>();
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthStates>(
@@ -82,6 +84,7 @@ class LoginView extends StatelessWidget {
                         height: 10.h,
                       ),
                       CustomFormField(
+                        controller:emailController,
                         onSaved: (val) {
                           AuthCubit.get(context).email = val;
                         },
@@ -105,6 +108,7 @@ class LoginView extends StatelessWidget {
                         height: 10.h,
                       ),
                       CustomFormField(
+                        controller: passwordController,
                         onSaved: (val) {
                           AuthCubit.get(context).password = val;
                         },
@@ -144,15 +148,7 @@ class LoginView extends StatelessWidget {
                       SizedBox(
                         height: 10.h,
                       ),
-                      Center(
-                        child: CustomSocialButton(
-                          onTap: () {
-                            //AuthCubit.get(context).signInWithGoogleMethod(context);
-                          },
-                          text: 'Sign In with Google',
-                          image: "assets/images/icons8_Google_2.png",
-                        ),
-                      ),
+
                     ],
                   ),
                 ),

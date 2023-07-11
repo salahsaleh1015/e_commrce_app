@@ -39,25 +39,6 @@ class HomeCubit extends Cubit<HomeStates> {
     });
   }
 
-  // getCategory() async {
-  //   emit(HomeLoadingCategoriesDataState());
-  //   bool isListPopulated = false;
-  //   HomeServices().getCategory().then((value) {
-  //     for (int i = 0; i < value.length; i++) {
-  //       _categoryModel.add(CategoryModel.fromJson(value[i].data() as Map<String, dynamic>));
-  //       if (i == value.length - 1) {
-  //         isListPopulated = true;
-  //       }
-  //     }
-  //   }).then((value) {
-  //     if (isListPopulated) {
-  //       emit(HomeSuccessCategoriesDataState());
-  //     }
-  //   }).catchError((error) {
-  //     print(error);
-  //     emit(HomeErrorCategoriesDataState());
-  //   });
-  // }
 
   getProducts() async {
     emit(HomeLoadingProductDataState());
