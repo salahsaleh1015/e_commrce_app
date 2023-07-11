@@ -11,63 +11,64 @@ import '../view_model/home_cubit.dart';
 
 
 class HomeView extends StatelessWidget {
-  // FirebaseAuth _auth = FirebaseAuth.instance;
-  List<String> images = [
-    "assets/images/Icon_Mens Shoe.png",
-    "assets/images/Group 217.png",
-    "assets/images/Icon_Devices.png",
-    "assets/images/Icon_Gadgets.png",
-    "assets/images/Icon_Gaming.png",
-  ];
-  List<String> titles = [
-   'men','women','device','gedgets','gaming'
-  ];
+
   @override
   Widget build(BuildContext context) {
-    var cubit  = HomeCubit.get(context);
+
     return BlocConsumer<HomeCubit, HomeStates>(
   listener: (context, state) {
   },
   builder: (context, state) {
-    var cubit  = HomeCubit.get(context);
-    return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.only(top: 80, right: 20, left: 20),
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _searchFormField(context),
-              SizedBox(
-                height: 30.h,
-              ),
-              CustomText(
-                title: 'Categories',
-                color: kTextColor,
-                fontSize: 20.sp,
-                fontWeight:FontWeight.bold ,
-              ),
+   if(state is HomeSuccessProductDataState ) {
+     return Scaffold(
+       body: Container(
+         padding: const EdgeInsets.only(top: 80, right: 20, left: 20),
+         child: SingleChildScrollView(
+           physics: const BouncingScrollPhysics(),
+           scrollDirection: Axis.vertical,
+           child: Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             children: [
+               _searchFormField(context),
+               SizedBox(
+                 height: 30.h,
+               ),
+               CustomText(
+                 title: 'Categories',
+                 color: kTextColor,
+                 fontSize: 20.sp,
+                 fontWeight: FontWeight.bold,
+               ),
 
-              SizedBox(
-                height: 10.h,
-              ),
-              _categoryList(),
-              SizedBox(
-                height: 20.h,
-              ),
-              CustomText(title:'Best Selling ', fontSize: 18.sp, color: kTextColor, fontWeight: FontWeight.bold),
+               SizedBox(
+                 height: 10.h,
+               ),
+               _categoryList(),
+               SizedBox(
+                 height: 20.h,
+               ),
+               CustomText(title: 'Best Selling ',
+                   fontSize: 18.sp,
+                   color: kTextColor,
+                   fontWeight: FontWeight.bold),
 
-              SizedBox(
-                height: 20.h,
-              ),
-              _productList(context),
-            ],
-          ),
-        ),
-      ),
-    );
+               SizedBox(
+                 height: 20.h,
+               ),
+               _productList(context),
+             ],
+           ),
+         ),
+       ),
+     );
+   }else{
+     return const Center(
+       child:
+       CircularProgressIndicator(),
+     );
+   }
+
+
   },
 );
   }

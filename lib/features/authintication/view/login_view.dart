@@ -136,18 +136,6 @@ class LoginView extends StatelessWidget {
                       SizedBox(
                         height: 10.h,
                       ),
-                      Center(
-                        child: Text(
-                          "-OR-",
-                          style:
-                              Theme.of(context).textTheme.headline5!.copyWith(
-                                    color: Colors.black,
-                                  ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
 
                     ],
                   ),
